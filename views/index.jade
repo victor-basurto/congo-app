@@ -5,4 +5,17 @@ block content
 		ul#breadcrumbs.breadcrumb.span12
 
 	.row
-		#database-list.span12
+		#testing
+			table.table.table-striped
+				tr
+					td some
+				tr
+					td more
+				tr 
+					td why
+
+	.row
+		table.table.table-striped#database-list.span12
+			script#database-list-template(type="text/backbone")
+				<td><a href="#"><%= name %></a></td>
+				<td><button class="btn btn-info">Click Me</button><td>

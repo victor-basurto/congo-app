@@ -1,17 +1,32 @@
 /**
+ * Connection to DB
+ */
+Congo.Database = Backbone.Model.extend({
+
+});
+Congo.DatabaseCollection = Backbone.Collection.extend({
+	model: Congo.Database,
+	url: '/mongoData'
+});
+
+/**
  * Database View
  */
 Congo.DatabaseView = Backbone.View.extend({
 	tagName: 'tr',
+
+	template: _.template( $('#database-list-template').html() ),
+
 	events: {
-		'click': 'hello'
+		'click button': 'hello'
 	},
-	hello: function() {
+	hello: function(ev) {
 		alert('hello from li Tag');
 	},
 
 	render: function() {
-		this.$el.html('<td>Db Name</td>');
+		var compiled = this.template(this.model.toJSON());
+		this.$el.html( compiled );
 		return this;
 	}
 });
@@ -20,18 +35,26 @@ Congo.DatabaseView = Backbone.View.extend({
  * Database List
  */
 Congo.DatabaseListView = Backbone.View.extend({
-	tagName: 'table',
-	className: 'table table-striped',
+
+	initialize: function() {
+		this.collection.bind('reset', this.render, this);
+		this.collection.bind('add', this.render, this);
+		this.collection.bind('remove', this.render, this);
+	},
+
+	tagName: 'tbody',
+	// className: 'table table-striped',
 
 	render: function() {
 
 		var els = [];
 
-		for ( var i = 1; i <= 5; i++ ) {
-			var itemView = new Congo.DatabaseView();
+		// for ( var i = 1; i <= 5; i++ ) {
+		this.collection.each(function(item) {
+			var itemView = new Congo.DatabaseView({ model: item });
 			// this.$el.append( itemView.render().el );
-			els.push(itemView.render().el)
-		}
+			els.push(itemView.render().el);
+		});
 		// return this;
 		this.$el.html( els );
 		$('#database-list').html( this.$el );

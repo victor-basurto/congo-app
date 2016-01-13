@@ -3,7 +3,9 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var assert = require('assert');
 var bodyParser = require('body-parser');
+var MongoClient = require('mongodb').MongoClient;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
